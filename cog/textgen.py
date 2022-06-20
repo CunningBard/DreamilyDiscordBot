@@ -5,10 +5,14 @@ import discord
 # client = commands.Bot(command_prefix='.', intents=intents)
 
 
-class t(commands.Cog):
+class TextGen(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.command()
+    async def generate(self, ctx, *, text):
+        pass
+
 
 def setup(cl):
-    cl.add_cog(t(cl))
+    cl.add_cog(TextGen(cl))
