@@ -1,7 +1,10 @@
 import os
+import time
 import discord
 import secrets_folder.secret as sc
 from discord.ext import commands
+
+start = time.time()
 
 """
 secret folder contains:
@@ -10,9 +13,9 @@ bot_token: discord bot token
 """
 
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix=">", intents=intents)
+bot = commands.Bot(command_prefix="?", intents=intents)
 
-last_reload = ""
+last_reload = None
 
 
 async def load_cog(ctx, extension):
@@ -20,7 +23,7 @@ async def load_cog(ctx, extension):
 
     if extension + ".py" in directory:
         try:
-            bot.load_extension(f"Cog.{extension}")
+            bot.load_extension(f"cog.{extension}")
             await ctx.send(f"cog {extension} has been loaded")
         except discord.ext.commands.errors.ExtensionAlreadyLoaded:
             await ctx.send(f"cog {extension} has already been loaded or couldnt be loaded")
@@ -33,7 +36,7 @@ async def unload_cog(ctx, extension):
 
     if extension + ".py" in directory:
         try:
-            bot.unload_extension(f"Cog.{extension}")
+            bot.unload_extension(f"cog.{extension}")
             await ctx.send(f"cog {extension} has been unloaded")
         except discord.ext.commands.errors.ExtensionNotLoaded:
             await ctx.send(f"cog {extension} has already been unloaded or couldnt be unloaded")
@@ -41,16 +44,60 @@ async def unload_cog(ctx, extension):
         await ctx.send(f"'{extension}' isn't a cog")
 
 
-@bot.command()
+@bot.command(aliases=["ld"])
 @commands.has_any_role("Owner", "Senior Moderator")
 async def load(ctx, extension):
     await load_cog(ctx, extension)
 
 
-@bot.command()
+@bot.command(aliases=["uld"])
 @commands.has_any_role("Owner", "Senior Moderator")
 async def unload(ctx, extension):
     await unload_cog(ctx, extension)
 
+
+@bot.command(aliases=["lall"])
+@commands.has_any_role("Owner", "Senior Moderator")
+async def load_all(ctx):
+    for file in os.listdir("cog"):
+        if file.endswith(".py"):
+            file = file[:-3]
+            await load_cog(ctx, file)
+
+
+@bot.command(aliases=["ulall"])
+@commands.has_any_role("Owner", "Senior Moderator")
+async def unload_all(ctx):
+    for file in os.listdir("cog"):
+        if file.endswith(".py"):
+            file = file[:-3]
+            await unload_cog(ctx, file)
+
+
+@bot.command(aliases=["rall"])
+@commands.has_any_role("Owner", "Senior Moderator")
+async def reload_all(ctx):
+    for file in os.listdir("cog"):
+        if file.endswith(".py"):
+            file = file[:-3]
+            await unload_cog(ctx, file)
+            await load_cog(ctx, file)
+
+
+@bot.command(aliases=["rld"])
+@commands.has_any_role("Owner", "Senior Moderator")
+async def reload(ctx, extension):
+    global last_reload
+    if not extension:
+        if last_reload:
+            extension = last_reload
+    last_reload = extension
+    await unload_cog(ctx, extension)
+    await load_cog(ctx, extension)
+
+
+for _file in os.listdir("cog"):
+    if _file.endswith(".py"):
+        bot.load_extension(f"cog.{_file[:-3]}")
 
 bot.run(sc.bot_token)
