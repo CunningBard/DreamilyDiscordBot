@@ -18,7 +18,7 @@ last_reload = ""
 async def load_cog(ctx, extension):
     directory = os.listdir("cog")
 
-    if extension in directory:
+    if extension + ".py" in directory:
         try:
             bot.load_extension(f"Cog.{extension}")
             await ctx.send(f"cog {extension} has been loaded")
@@ -31,7 +31,7 @@ async def load_cog(ctx, extension):
 async def unload_cog(ctx, extension):
     directory = os.listdir("cog")
 
-    if extension in directory:
+    if extension + ".py" in directory:
         try:
             bot.unload_extension(f"Cog.{extension}")
             await ctx.send(f"cog {extension} has been unloaded")
