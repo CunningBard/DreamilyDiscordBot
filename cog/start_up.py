@@ -14,7 +14,7 @@ class Startup(commands.Cog):
         duration = time.time() - main.start
         print("Bot is Ready")
         channel_chat_bot = self.client.get_channel(util.BotChat)
-        embed = util.make_embed("Ready To Run!", "blue", f"I'm ready to do my tasks, start up took{duration}")
+        embed = util.make_embed("Ready To Run!", "blue", f"I'm ready to do my tasks, start up took {round(duration, 2)}s")
         await channel_chat_bot.send(embed=embed)
 
     @commands.command()
