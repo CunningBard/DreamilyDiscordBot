@@ -1,2 +1,2 @@
 /.idea
-/secrets_folder
+secrets_folder/secret.py
