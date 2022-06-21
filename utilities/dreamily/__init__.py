@@ -47,8 +47,8 @@ def build_dream(
 
 async def default_dream(content: str):
     global last_used
-    if time.time() - last_used > 0:
-        await asyncio.sleep(2)
+    if time.time() - last_used < 1:
+        await asyncio.sleep(1)
 
     last_used = time.time()
     try:
