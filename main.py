@@ -6,14 +6,9 @@ from discord.ext import commands
 
 start = time.time()
 
-"""
-secret folder contains:
-api_key: dreamily api key
-bot_token: discord bot token
-"""
 
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix="?", intents=intents)
+bot = discord.Bot(command_prefix="?", intents=intents, debug_guilds=[988437072354353202])
 
 last_reload = None
 
@@ -25,7 +20,7 @@ async def load_cog(ctx, extension):
         try:
             bot.load_extension(f"cog.{extension}")
             await ctx.send(f"cog {extension} has been loaded")
-        except discord.ext.commands.errors.ExtensionAlreadyLoaded:
+        except discord.errors.ExtensionFailed:
             await ctx.send(f"cog {extension} has already been loaded or couldnt be loaded")
     else:
         await ctx.send(f"'{extension}' isn't a cog")
@@ -38,25 +33,25 @@ async def unload_cog(ctx, extension):
         try:
             bot.unload_extension(f"cog.{extension}")
             await ctx.send(f"cog {extension} has been unloaded")
-        except discord.ext.commands.errors.ExtensionNotLoaded:
+        except discord.errors.ExtensionAlreadyLoaded:
             await ctx.send(f"cog {extension} has already been unloaded or couldnt be unloaded")
     else:
         await ctx.send(f"'{extension}' isn't a cog")
 
 
-@bot.command(aliases=["ld"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
 async def load(ctx, extension):
     await load_cog(ctx, extension)
 
 
-@bot.command(aliases=["uld"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
 async def unload(ctx, extension):
     await unload_cog(ctx, extension)
 
 
-@bot.command(aliases=["lall"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
 async def load_all(ctx):
     for file in os.listdir("cog"):
@@ -65,7 +60,7 @@ async def load_all(ctx):
             await load_cog(ctx, file)
 
 
-@bot.command(aliases=["ulall"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
 async def unload_all(ctx):
     for file in os.listdir("cog"):
@@ -74,7 +69,7 @@ async def unload_all(ctx):
             await unload_cog(ctx, file)
 
 
-@bot.command(aliases=["rall"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
 async def reload_all(ctx):
     for file in os.listdir("cog"):
@@ -84,9 +79,9 @@ async def reload_all(ctx):
             await load_cog(ctx, file)
 
 
-@bot.command(aliases=["rld"])
+@bot.slash_command()
 @commands.has_any_role("Owner", "Senior Moderator")
-async def reload(ctx, extension):
+async def reload(ctx, extension=""):
     global last_reload
     if not extension:
         if last_reload:
