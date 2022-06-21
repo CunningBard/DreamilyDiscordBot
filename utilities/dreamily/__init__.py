@@ -13,8 +13,6 @@ DEFAULT_HEADERS = {"Content-Type": "application/json"}
 
 session = requests.Session()
 
-last_used = time.time()
-
 
 def build_dream(user_id: str, content: str, mid: str = DEFAULT_MID, region: str = DEFAULT_REGION,
                 length: int = 70, ) -> tuple[str, bool]:
@@ -41,11 +39,6 @@ def build_dream(user_id: str, content: str, mid: str = DEFAULT_MID, region: str 
 
 
 async def default_dream(content: str):
-    global last_used
-    if time.time() - last_used < 1:
-        await asyncio.sleep(1)
-
-    last_used = time.time()
     try:
         reply, ok = build_dream(
             user_id=sc.api_key,  # token
