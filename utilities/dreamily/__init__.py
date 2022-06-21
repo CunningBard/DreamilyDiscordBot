@@ -16,13 +16,8 @@ session = requests.Session()
 last_used = time.time()
 
 
-def build_dream(
-        user_id: str,
-        content: str,
-        mid: str = DEFAULT_MID,
-        region: str = DEFAULT_REGION,
-        length: int = 70,
-) -> tuple[str, bool]:
+def build_dream(user_id: str, content: str, mid: str = DEFAULT_MID, region: str = DEFAULT_REGION,
+                length: int = 70, ) -> tuple[str, bool]:
     resp = session.post(
         DREAMILY_API_URI,
         json=dict(user_id=user_id,
