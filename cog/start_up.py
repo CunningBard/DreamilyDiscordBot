@@ -17,7 +17,7 @@ class Startup(commands.Cog):
         embed = util.make_embed("Ready To Run!", "blue", f"I'm ready to do my tasks, start up took {round(duration, 2)}s")
         await channel_chat_bot.send(embed=embed)
 
-    @commands.command()
+    @commands.slash_command(description="Sends the bot's latency.")
     async def ping(self, ctx):
         await ctx.send(embed=util.make_embed("Pong!", "blue", f"Ping: {round(self.client.latency * 1000)}ms"))
 
