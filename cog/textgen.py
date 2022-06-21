@@ -1,4 +1,5 @@
 from discord.ext import commands
+import utilities.dreamily as drm
 import discord
 
 # intents = discord.Intents.all()
@@ -11,7 +12,8 @@ class TextGen(commands.Cog):
 
     @commands.command()
     async def generate(self, ctx, *, text):
-        pass
+        res = await drm.default_dream(text)
+        await ctx.send(text + res)
 
 
 def setup(cl):
