@@ -1,5 +1,5 @@
 import requests
-import secrets_folder.secrets as sc
+import secrets_folder.secret as sc
 
 DREAMILY_API_URI = "https://dreamily.ai/v2/api/bot_ai"
 

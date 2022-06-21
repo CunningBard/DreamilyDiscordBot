@@ -1,6 +1,6 @@
 import time
 import main
-import utilities as util
+import utilities.util as util
 from discord.ext import commands
 import discord
 
