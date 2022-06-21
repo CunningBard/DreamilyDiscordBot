@@ -17,7 +17,7 @@ class TextGen(commands.Cog):
     async def generate(self, ctx, *, text=""):
         mes = ""
         if not mn.database.has(ctx.author.id):
-            mn.database.new_user(str(ctx.author.id))
+            mn.database.new_user(ctx.author.id)
             mes += "Warning! DreamilyBot isn't private because it isn't funded so the dev has to do some witchery to " \
                    "make this bot happen, but **dont worry** only saved works will be public and saved works arent a " \
                    "thing so privacy is still a thing\n\n "
@@ -39,7 +39,7 @@ class TextGen(commands.Cog):
     async def dev_generate(self, ctx, *, text=""):
         mes = ""
         if not mn.database.has(ctx.author.id):
-            mn.database.new_user(str(ctx.author.id))
+            mn.database.new_user(ctx.author.id)
             mes += "Warning! DreamilyBot isn't private because it isn't funded so the dev has to do some witchery to " \
                    "make this bot happen, but **dont worry** only saved works will be public and saved works arent a " \
                    "thing so privacy is still a thing\n\n "
