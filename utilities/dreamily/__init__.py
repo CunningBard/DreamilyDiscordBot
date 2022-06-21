@@ -1,3 +1,5 @@
+import time
+import asyncio
 import requests
 import secrets_folder.secret as sc
 
@@ -10,6 +12,8 @@ DEFAULT_REGION = "USA"
 DEFAULT_HEADERS = {"Content-Type": "application/json"}
 
 session = requests.Session()
+
+last_used = time.time()
 
 
 def build_dream(
@@ -41,12 +45,20 @@ def build_dream(
     return result["data"]["row"], True
 
 
-try:
-    reply, ok = build_dream(
-        user_id=sc.api_key,  # token
-        content="let's begin a new story:",
-        length=100,
-    )
-    print(reply)
-except Exception as e:
-    reply = str(e)
+async def default_dream(content: str):
+    global last_used
+    if time.time() - last_used > 0:
+        await asyncio.sleep(2)
+
+    last_used = time.time()
+    try:
+        reply, ok = build_dream(
+            user_id=sc.api_key,  # token
+            content=content,
+            length=70,
+        )
+        print(reply)
+    except Exception as e:
+        reply = str(e)
+
+    return reply
