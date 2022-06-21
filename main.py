@@ -2,15 +2,19 @@ import os
 import time
 import discord
 import secrets_folder.secret as sc
+import utilities.util.data as data
 from discord.ext import commands
 
 start = time.time()
-
+wait_time = 10
 
 intents = discord.Intents.default()
 bot = discord.Bot(command_prefix="?", intents=intents, debug_guilds=[988437072354353202])
 
 last_reload = None
+
+database = data.Database("dynamic_files/data.json")
+database.import_content()
 
 
 async def load_cog(ctx, extension):
