@@ -1,4 +1,5 @@
 import time
+import typing
 import asyncio
 import requests
 import secrets_folder.secret as sc
@@ -15,7 +16,7 @@ session = requests.Session()
 
 
 def build_dream(user_id: str, content: str, mid: str = DEFAULT_MID, region: str = DEFAULT_REGION,
-                length: int = 70, ) -> tuple[str, bool]:
+                length: int = 70, ):
     resp = session.post(
         DREAMILY_API_URI,
         json=dict(user_id=user_id,
