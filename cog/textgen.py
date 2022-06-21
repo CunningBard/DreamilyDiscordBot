@@ -1,3 +1,5 @@
+import time
+
 from discord.ext import commands
 import utilities.dreamily as drm
 import discord
@@ -10,10 +12,18 @@ class TextGen(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.slash_command()
     async def generate(self, ctx, *, text):
+        interaction = await ctx.respond("generating..")
         res = await drm.default_dream(text)
-        await ctx.send(text + res)
+        await interaction.edit_original_message(content=text + res)
+
+    @commands.slash_command()
+    async def dev_generate(self, ctx, *, text):
+        now = time.time()
+        interaction = await ctx.respond("generating..")
+        res = await drm.default_dream(text)
+        await interaction.edit_original_message(content=text + res + f"\ntook: {round(time.time() - now, 4)}s")
 
 
 def setup(cl):
