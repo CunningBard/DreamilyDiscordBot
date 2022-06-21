@@ -1,2 +1,3 @@
 /.idea
 secrets_folder/secret.py
+venv
