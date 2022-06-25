@@ -36,12 +36,8 @@ class TextGen(commands.Cog):
 
     @commands.slash_command()
     async def dev_generate(self, ctx, *, text=""):
-        mes = ""
         if not mn.database.has(ctx.author.id):
             mn.database.new_user(ctx.author.id)
-            mes += "Warning! DreamilyBot isn't private because it isn't funded so the dev has to do some witchery to " \
-                   "make this bot happen, but **dont worry** only saved works will be public and saved works arent a " \
-                   "thing so privacy is still a thing\n\n "
         else:
             person = mn.database.get(ctx.author.id)
             time_since_last = time.time() - person.last_use
@@ -53,12 +49,13 @@ class TextGen(commands.Cog):
 
         now = time.time()
 
-        interaction = await ctx.respond(mes + "Generating..")
+        interaction = await ctx.respond("Generating..")
         res = "lorem imps-um"
         # res = await drm.default_dream(text)
-        await interaction.edit_original_message(content=mes + text + res + f"\n\ntook: {round(time.time() - now, 2)}")
+        await interaction.edit_original_message(content=text + res + f"\n\ntook: {round(time.time() - now, 2)}")
 
     @commands.slash_command(description="")
+    @commands.has_any_role("Owner", "Senior Moderator")
     async def db(self, ctx):
         await ctx.respond(mn.database.data)
 
