@@ -10,7 +10,7 @@ start = time.time()
 wait_time = 10
 
 intents = discord.Intents.default()
-bot = discord.Bot(command_prefix="?", intents=intents, debug_guilds=[988437072354353202])
+bot = discord.Bot(command_prefix="?", intents=intents)
 
 last_reload = None
 

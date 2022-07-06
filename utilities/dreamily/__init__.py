@@ -46,7 +46,6 @@ async def default_dream(content: str):
             content=content,
             length=70,
         )
-        print(reply)
     except Exception as e:
         reply = str(e)
 

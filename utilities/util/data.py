@@ -21,8 +21,7 @@ import orjson
 
 
 class Person:
-    def __init__(self, discord_id: str, last_use: int = 0, command_use_times: int = 1, num_stories: int = 0,
-                 stories=None):
+    def __init__(self, discord_id: str, last_use: int = 0, command_use_times: int = 1, num_stories: int = 0, stories=None, last_story: str = "", last_input: str = ""):
         if stories is None:
             stories = {}
 
@@ -33,11 +32,13 @@ class Person:
         self.command_use_times = command_use_times
         self.num_stories = num_stories
         self.stories = stories
+        self.last_story = last_story
+        self.last_input = last_input
 
     def as_dict(self) -> dict:
         return {
             "id": self.dis_id, "last_use": self.last_use, "command_use_times": self.command_use_times,
-            "num_stories": self.num_stories, "stories": self.stories
+            "num_stories": self.num_stories, "stories": self.stories, "last_story": self.last_story, "last_input": self.last_input
         }
 
 
@@ -54,11 +55,11 @@ class Database:
         for id_ in list(data["people"]):
             person = data["people"][id_]
             self.data[id_] = Person(person["id"], person["last_use"], person["command_use_times"],
-                                    person["num_stories"], person["stories"])
+                                    person["num_stories"], person["stories"], person["last_story"],   person["last_input"])
 
     def new_user(self, user_id: int):
         user_id = str(user_id)
-        self.data[user_id] = Person(user_id, int(time.time()))
+        self.data[user_id] = Person(user_id)
         self.export_content()
 
     def export_content(self):
